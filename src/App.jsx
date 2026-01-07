@@ -4,6 +4,8 @@ import Players from './pages/Players';
 import Matches from './pages/Matches';
 import Agents from './pages/Agents';
 import PlayerStats from './pages/PlayerStats';
+import Admin from "./pages/Admin";
+
 import { useState } from 'react';
 
 const App = () => {
@@ -21,6 +23,7 @@ const App = () => {
             <Link to="/matches" className="text-gray-700 hover:text-red-600">Matches</Link>
             <Link to="/agents" className="text-gray-700 hover:text-red-600">Agents</Link>
             <Link to="/player-stats" className="text-gray-700 hover:text-red-600">Player Stats</Link>
+            <Link to="/admin" className="text-gray-700 hover:text-red-600">Admin</Link>
           </nav>
         </aside>
 
@@ -44,6 +47,7 @@ const App = () => {
               <Route path="/matches" element={<Matches />} />
               <Route path="/agents" element={<Agents />} />
               <Route path="/player-stats" element={<PlayerStats />} />
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
         </div>
@@ -53,3 +57,4 @@ const App = () => {
 };
 
 export default App;
+
