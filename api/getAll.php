@@ -37,3 +37,4 @@ $out["agents"] = fetchTable("agents", $supabaseUrl, $supabaseKey);
 $out["player_stats"] = fetchTable("player_stats", $supabaseUrl, $supabaseKey);
 
 echo json_encode($out);
+ 
