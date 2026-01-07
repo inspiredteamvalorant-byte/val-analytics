@@ -1,25 +1,8 @@
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
-
-export const LineChartWrapper = ({ data, dataKey, nameKey, color="#8884d8" }) => (
-  <ResponsiveContainer width="100%" height={300}>
-    <LineChart data={data}>
-      <XAxis dataKey={nameKey} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey={dataKey} stroke={color} />
-    </LineChart>
-  </ResponsiveContainer>
-);
-
-export const BarChartWrapper = ({ data, dataKey, nameKey, color="#82ca9d" }) => (
-  <ResponsiveContainer width="100%" height={300}>
-    <BarChart data={data}>
-      <XAxis dataKey={nameKey} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey={dataKey} fill={color} />
-    </BarChart>
-  </ResponsiveContainer>
-);
+export default function ChartWrapper({ title, children }) {
+  return (
+    <div className="bg-white rounded-2xl shadow p-4 border mb-4">
+      {title && <h2 className="font-semibold text-lg mb-2">{title}</h2>}
+      <div>{children}</div>
+    </div>
+  );
+}
