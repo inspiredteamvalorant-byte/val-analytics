@@ -1,2 +1,1 @@
-# val-analytics
-val-analytics
+# valorant-analytics

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{background:#0F172A;color:white;font-family:Arial}
+.card{background:#111827;padding:12px;margin:8px;border-radius:8px}
+select{margin:6px;padding:4px}
+</style>
+</head>
+
+<body>
+
+<h2>Dashboard Performance Bo1</h2>
+
+<div class="card">
+ Filtre Joueur :
+ <select id="player"></select>
+
+ Filtre Map :
+ <select id="map"></select>
+</div>
+
+<div class="card">
+<canvas id="acsMap"></canvas>
+</div>
+
+<div class="card">
+<canvas id="kdPlayers"></canvas>
+</div>
+
+<div class="card">
+<canvas id="impactAgents"></canvas>
+</div>
+
+<script>
+
+async function load(){
+
+ const res = await fetch("/api/getAll.php");
+ const data = await res.json();
+
+ /* REMPLISSAGE FILTRES */
+
+ const players = [...new Set(data.player_stats.map(s=>s.player_name))];
+ const maps = [...new Set(data.player_stats.map(s=>s.map))];
+
+ const selP = document.getElementById("player");
+ selP.innerHTML = "<option>All</option>" +
+   players.map(p=>`<option>${p}</option>`).join("");
+
+ const selM = document.getElementById("map");
+ selM.innerHTML = "<option>All</option>" +
+   maps.map(m=>`<option>${m}</option>`).join("");
+
+ buildDash(data.player_stats);
+}
+
+function buildDash(stats){
+
+ /* ============ 1. ACS MOYEN PAR MAP ============ */
+
+ const acsByMap = Object.values(
+   stats.reduce((acc,s)=>{
+     if(!acc[s.map]) acc[s.map]={map:s.map, acs:0, n:0};
+
+     acc[s.map].acs += parseFloat(s.acs||0);
+     acc[s.map].n++;
+     return acc;
+   },{})
+ ).map(m=>({map:m.map, acs:m.acs/m.n}));
+
+ new Chart(document.getElementById("acsMap"),{
+   type:"bar",
+   data:{
+     labels: acsByMap.map(s=>s.map),
+     datasets:[{label:"ACS moyen", data:acsByMap.map(s=>s.acs)}]
+   }
+ });
+
+ /* ============ 2. KD PAR JOUEUR ============ */
+
+ const kdPlayers = Object.values(
+   stats.reduce((acc,s)=>{
+     if(!acc[s.player_name])
+        acc[s.player_name]={player:s.player_name,k:0,d:0};
+
+     acc[s.player_name].k+=s.kills;
+     acc[s.player_name].d+=s.deaths;
+     return acc;
+   },{})
+ ).map(p=>({player:p.player, kd:p.k/p.d}));
+
+ new Chart(document.getElementById("kdPlayers"),{
+   type:"bar",
+   data:{
+     labels: kdPlayers.map(p=>p.player),
+     datasets:[{label:"K/D", data:kdPlayers.map(p=>p.kd)}]
+   }
+ });
+
+ /* ============ 3. IMPACT PAR AGENT ============ */
+
+ const impact = Object.values(
+   stats.reduce((acc,s)=>{
+     if(!acc[s.agent_name])
+        acc[s.agent_name]={agent:s.agent_name,i:0,n:0};
+
+     acc[s.agent_name].i+=parseFloat(s.acs||0);
+     acc[s.agent_name].n++;
+     return acc;
+   },{})
+ ).map(a=>({agent:a.agent, val:a.i/a.n}));
+
+ new Chart(document.getElementById("impactAgents"),{
+   type:"bar",
+   data:{
+     labels: impact.map(a=>a.agent),
+     datasets:[{label:"Impact ACS", data:impact.map(a=>a.val)}]
+   }
+ });
+
+}
+
+load();
+</script>
+
+</body>
+</html>
