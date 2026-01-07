@@ -7,6 +7,7 @@ export default function Sidebar() {
     { name: "Agents", path: "/agents" },
     { name: "Matches", path: "/matches" },
     { name: "Maps", path: "/maps" },
+    { name: "Admin", path: "/admin" }, // 👈 Ajouté
   ];
 
   return (
@@ -17,8 +18,10 @@ export default function Sidebar() {
           <NavLink
             key={link.path}
             to={link.path}
-            className={({isActive}) => 
-              isActive ? "font-bold text-yellow-400" : "hover:text-yellow-300"
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-yellow-400"
+                : "hover:text-yellow-300"
             }
           >
             {link.name}
