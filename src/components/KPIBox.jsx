@@ -1,11 +1,8 @@
-const KPIBox = ({ label, value, color="red" }) => {
-  const colorClass = color === "red" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700";
+export default function KPIBox({ label, value }) {
   return (
-    <div className={`shadow rounded-lg p-4 text-center ${colorClass}`}>
-      <h3 className="text-sm">{label}</h3>
-      <p className="text-2xl font-bold">{value}</p>
+    <div className="bg-white rounded-2xl shadow p-3 border">
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className="text-xl font-bold">{value}</p>
     </div>
   );
-};
-
-export default KPIBox;
+}
