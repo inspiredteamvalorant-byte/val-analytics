@@ -1,16 +1,16 @@
-const FilterDropdown = ({ label, options, value, onChange }) => (
-  <div className="flex flex-col mb-2">
-    <label className="text-sm font-medium text-gray-700">{label}</label>
-    <select
-      className="mt-1 border border-gray-300 rounded p-2"
-      value={value}
-      onChange={e => onChange(e.target.value)}
-    >
-      {options.map(opt => (
-        <option key={opt} value={opt}>{opt}</option>
-      ))}
-    </select>
-  </div>
-);
-
-export default FilterDropdown;
+export default function FilterDropdown({ label, options, value, onChange }) {
+  return (
+    <div className="flex flex-col mb-4">
+      <label className="mb-1 font-medium">{label}</label>
+      <select
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="p-2 border rounded"
+      >
+        {options.map(opt => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
